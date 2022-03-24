@@ -30,6 +30,8 @@ where
 
 pub fn development_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let mut properties = serde_json::map::Map::new();
+	properties.insert("tokenDecimals".into(), 18.into());
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -69,7 +71,7 @@ pub fn development_config() -> Result<ChainSpec, String> {
 		// Fork ID
 		None,
 		// Properties
-		None,
+		Some(properties),
 		// Extensions
 		None,
 	))
@@ -77,6 +79,8 @@ pub fn development_config() -> Result<ChainSpec, String> {
 
 pub fn local_testnet_config() -> Result<ChainSpec, String> {
 	let wasm_binary = WASM_BINARY.ok_or_else(|| "Development wasm not available".to_string())?;
+	let mut properties = serde_json::map::Map::new();
+	properties.insert("tokenDecimals".into(), 18.into());
 
 	Ok(ChainSpec::from_genesis(
 		// Name
@@ -116,7 +120,7 @@ pub fn local_testnet_config() -> Result<ChainSpec, String> {
 		// Fork ID
 		None,
 		// Properties
-		None,
+		Some(properties),
 		// Extensions
 		None,
 	))
