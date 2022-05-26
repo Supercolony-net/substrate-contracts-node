@@ -6,7 +6,39 @@ configured to include Substrate's [`pallet-contracts`](https://github.com/parity
 
 This repository is tracking Substrate's `master`.
 
+_It contains a couple of modifications that make it unsuitable for a
+production deployment, but a great fit for development and testing:_
+
+* The unstable features of the [`pallet-contracts`](https://github.com/paritytech/substrate/tree/master/frame/contracts)
+  are enabled by default (see the [`runtime/Cargo.toml`](https://github.com/paritytech/substrate-contracts-node/blob/main/runtime/Cargo.toml)).
+* The consensus algorithm has been switched to `manual-seal` in
+  [#42](https://github.com/paritytech/substrate-contracts-node/pull/42).
+  Hereby blocks are authored immediately at every transaction, so there
+  is none of the typical six seconds block time associated with `grandpa` or `aura`.
+* _If no CLI arguments are passed the node is started in development mode
+  by default._
+* _With each start of the node process the chain starts from genesis ‒ so no
+  chain state is retained, all contracts will be lost! If you want to retain
+  chain state you have to supply a `--base-path`._
+* For `pallet_contracts::Config` we increased the allowed contract sizes. This
+  avoids running into `CodeTooLarge` when uploading contracts during development.
+  See the comment in [`runtime/src/lib.rs`](https://github.com/paritytech/substrate-contracts-node/blob/main/runtime/src/lib.rs)
+  for more details.
+
+If you are looking for a node suitable for production see these configurations:
+
+* [Substrate Node Template](https://github.com/paritytech/substrate/tree/master/bin/node-template)
+* [Substrate Cumulus Parachain Template](https://github.com/paritytech/cumulus/tree/master/parachain-template)
+* [Contracts Parachain Configuration for Rococo](https://github.com/paritytech/cumulus/tree/master/parachains/runtimes/contracts/contracts-rococo)
+
 ## Installation
+
+### Download Binary
+
+The easiest way is to download a binary release from [our releases page](https://github.com/paritytech/substrate-contracts-node/releases)
+and just execute `./substrate-contracts-node --dev`.
+
+### Build Locally
 
 Follow the [official installation steps](https://docs.substrate.io/v3/getting-started/installation/)
 to set up all Substrate prerequisites.
@@ -22,7 +54,7 @@ as the `Cargo.lock` in those repositories ‒ ensuring that the last
 known-to-work version of the dependencies are used.
 
 The latest confirmed working Substrate commit which will then be used is
-[4289b32f052e4ac0ce4c049000c0ef8bd5365a53](https://github.com/paritytech/substrate/tree/4289b32f052e4ac0ce4c049000c0ef8bd5365a53).
+[c0ee2adaa54b22ee0df5d1592cd0430961afd95c](https://github.com/paritytech/substrate/tree/c0ee2adaa54b22ee0df5d1592cd0430961afd95c).
 
 ## Usage
 
